@@ -501,6 +501,14 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 		}
 	}
 	
+	public void destroy() {
+		foreach( var child in _children ) {
+			child.manager.removeElement( child );
+		}
+	
+		_manager.removeFromTouchables(this);
+	}
+	
 	
     /// <summary>
     /// IComparable - sorts based on the z value of the client
