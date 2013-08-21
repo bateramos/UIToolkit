@@ -31,6 +31,8 @@ public abstract class UIAbstractContainer : UIObject, IPositionable
 
 	protected float _contentWidth;
 	protected float _contentHeight;
+	
+	private float lastYPosition = 0.0f;
 
 	/// <summary>
 	/// Hides the container and all of it's children
@@ -220,6 +222,13 @@ public abstract class UIAbstractContainer : UIObject, IPositionable
 
 				var i = 0;
 				var lastIndex = _children.Count;
+				if (lastIndex > 0) {
+					if (lastYPosition != _children[0].localPosition.y) {
+						clearTouchFromButtons();
+					}
+					lastYPosition = _children[0].localPosition.y;
+				}
+				
 				foreach( var item in _children )
 				{
 					// we add spacing for all but the first and last
@@ -286,6 +295,14 @@ public abstract class UIAbstractContainer : UIObject, IPositionable
 	{
 		_width = _contentWidth;
 		_height = _contentHeight;
+	}
+	
+	public void clearTouchFromButtons() {
+		foreach( var child in _children ) {
+			if (child.GetType() == typeof(UIButton)) {
+				((UITouchableSprite)child).highlighted = false;
+			}
+		}
 	}
 
 }
